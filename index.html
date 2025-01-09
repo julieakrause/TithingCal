@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tithing Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 600px;
+    }
+    .calculator {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <h1>Jesus Calls Us to Tithe 10%</h1>
+  <p>5% to our parish, 4% to other charities, and 1% to the Archdiocese.</p>
+  <div class="form-group">
+    <label for="income">Enter your annual income:</label>
+    <input type="number" id="income" placeholder="Enter income in dollars" required>
+  </div>
+  <div class="form-group">
+    <label for="percentage">Tithing Percentage (default is 10%):</label>
+    <input type="number" id="percentage" value="10" required>
+  </div>
+  <button onclick="calculateTithe()">Calculate Tithe</button>
+  <div class="result" id="result"></div>
+
+  <h2>Compare Your Current Tithing</h2>
+  <div class="form-group">
+    <label for="currentTithe">Enter your current annual tithe:</label>
+    <input type="number" id="currentTithe" placeholder="Enter current tithe in dollars">
+  </div>
+  <button onclick="compareTithe()">Compare Tithing</button>
+  <div class="result" id="comparisonResult"></div>
+
+  <p class="disclaimer">
+    This information does not get transmitted anywhere. All calculations are performed locally in your browser.
+  </p>
+</div>
+
+<script>
+  function calculateTithe() {
+    const income = parseFloat(document.getElementById('income').value);
+    const percentage = parseFloat(document.getElementById('percentage').value);
+
+    if (!income || income < 0 || !percentage || percentage < 0) {
+      document.getElementById('result').innerText = 'Please enter valid numbers.';
+      return;
+    }
+
+    const annualTithe = (income * percentage) / 100;
+    const monthlyTithe = annualTithe / 12;
+    const weeklyTithe = annualTithe / 52;
+
+    document.getElementById('result').innerHTML = `
+      <p>Your total tithe (at ${percentage}%) is:</p>
+      <ul>
+        <li><strong>Annual:</strong> $${annualTithe.toFixed(2)}</li>
+        <li><strong>Monthly:</strong> $${monthlyTithe.toFixed(2)}</li>
+        <li><strong>Weekly:</strong> $${weeklyTithe.toFixed(2)}</li>
+      </ul>
+    `;
+  }
+
+  function compareTithe() {
+    const income = parseFloat(document.getElementById('income').value);
+    const currentTithe = parseFloat(document.getElementById('currentTithe').value);
+
+    if (!income || income < 0 || !currentTithe || currentTithe < 0) {
+      document.getElementById('comparisonResult').innerText = 'Please enter valid numbers.';
+      return;
+    }
+
+    const currentPercentage = (currentTithe / income) * 100;
+    const recommendedTithe = (income * 5) / 100; // 5% for parish
+    const recommendedMonthly = recommendedTithe / 12;
+    const recommendedWeekly = recommendedTithe / 52;
+    const difference = recommendedTithe - currentTithe;
+
+    document.getElementById('comparisonResult').innerHTML = `
+      <p>Your current tithing percentage is ${currentPercentage.toFixed(2)}%.</p>
+      <p>Recommended 5% parish tithe amounts:</p>
+      <ul>
+        <li><strong>Annual:</strong> $${recommendedTithe.toFixed(2)}</li>
+        <li><strong>Monthly:</strong> $${recommendedMonthly.toFixed(2)}</li>
+        <li><strong>Weekly:</strong> $${recommendedWeekly.toFixed(2)}</li>
+      </ul>
+      <p>The difference between your current tithe and the recommended 5% is $${difference.toFixed(2)} annually.</p>
+    `;
+  }
+</script>
+
+</body>
+</html>
